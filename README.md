@@ -1,2 +1,2 @@
 # Chessed Rules
-Implements the rules of chess.
+Open source implementation of the rules of chess.
