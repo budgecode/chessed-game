@@ -1,22 +1,84 @@
 #pragma once
 
-#include "common.h"
-#include "state.h"
-
-#include <vector>
+#include <string>
+#include <array>
 
 namespace chessed { namespace chess {
+
+typedef std::string Square;
+
+enum Piece {
+    Empty,
+    WhiteKing,
+    WhiteQueen,
+    WhiteBishop,
+    WhiteRook,
+    WhiteKnight,
+    WhitePawn,
+    BlackKing,
+    BlackQueen,
+    BlackBishop,
+    BlackRook,
+    BlackKnight,
+    BlackPawn
+};
+
+struct Move {
+    bool is_check;
+    bool is_mate;
+    bool promoting;
+    Piece captured;
+    Square from;
+    Square to;
+};
+
+inline int is_white(Piece p)
+{
+    switch (p)
+    {
+        case WhitePawn:
+        case WhiteKnight:
+        case WhiteBishop:
+        case WhiteRook:
+        case WhiteQueen:
+        case WhiteKing:
+            return 1;
+        case BlackPawn:
+        case BlackKnight:
+        case BlackBishop:
+        case BlackRook:
+        case BlackQueen:
+        case BlackKing:
+            return 0;
+        case Empty:
+        default:
+            return -1;
+    }
+}
 
 class Game {
 
 public:
-    void reset();
-    bool move(Square from_index, Square to_index);
-    std::vector<Square> get_possible_moves(Square from);
-    int get_turn();
+    Game();
     
+    void init_with_fen(const std::string& fen);
+    void init_with_pgn(const std::string& pgn) {};
+    std::string to_fen() { return ""; };
+    std::string to_pgn() { return ""; };
+    
+    bool move(const Square& from, const Square& to, Move& info);
+    bool validate_move(const Square& from, const Square& to, Move& info);
+
+    int turn();
+    int move_num();
+
+    // Accessors
+    Piece& operator[](int);
+    Piece& operator[](const Square&);
+    Piece& operator()(int, int); 
+
 private:
-    State m_state;
+    std::array<Piece, 64> m_state;
     int m_turn;
 
 };

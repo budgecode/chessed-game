@@ -3,204 +3,68 @@
 #include "../include/game.h"
 
 namespace chessed { namespace chess {
+    Game::Game() {
+        m_state[0] = WhiteRook;
+        m_state[1] = WhiteKnight;
+        m_state[2] = WhiteBishop;
+        m_state[3] = WhiteQueen;
+        m_state[4] = WhiteKing;
+        m_state[5] = WhiteBishop;
+        m_state[6] = WhiteKnight;
+        m_state[7] = WhiteRook;
 
-void Game::reset()
-{
-    m_turn = 1;
-    m_state.reset();
-}
+        m_state[8] = WhitePawn;
+        m_state[9] = WhitePawn;
+        m_state[10] = WhitePawn;
+        m_state[11] = WhitePawn;
+        m_state[12] = WhitePawn;
+        m_state[13] = WhitePawn;
+        m_state[14] = WhitePawn;
+        m_state[15] = WhitePawn;
 
-std::vector<Square> Game::get_possible_moves(Square from)
-{
+        for (int i = 16; i < 48; i++)
+        {
+            m_state[i] = Empty;
+        }
 
-    Piece piece = m_state.get(from);
+        m_state[48] = BlackPawn;
+        m_state[49] = BlackPawn;
+        m_state[50] = BlackPawn;
+        m_state[51] = BlackPawn;
+        m_state[52] = BlackPawn;
+        m_state[53] = BlackPawn;
+        m_state[54] = BlackPawn;
+        m_state[55] = BlackPawn;
 
-    std::vector<Square> possible_moves;
-    switch (piece)
+        m_state[56] = BlackRook;
+        m_state[57] = BlackKnight;
+        m_state[58] = BlackBishop;
+        m_state[59] = BlackQueen;
+        m_state[60] = BlackKing;
+        m_state[61] = BlackBishop;
+        m_state[62] = BlackKnight;
+        m_state[63] = BlackRook;
+    };
+
+    Piece& Game::operator[](int i)
     {
-        case WhitePawn:
-            possible_moves.push_back({from.row + 1, from.col});
-            
-            if (from.row == 1)
-            {
-                possible_moves.push_back({from.row + 2, from.col});
-            }
-
-            if (m_state.get(from.row + 1, from.col - 1) != Empty &&
-                m_state.get(from.row + 1, from.col - 1) != OutOfBounds) {
-                possible_moves.push_back({from.row + 1, from.col - 1});
-            }
-
-            if (m_state.get(from.row + 1, from.col + 1) != Empty &&
-                m_state.get(from.row + 1, from.col + 1) != OutOfBounds) {
-                possible_moves.push_back({from.row + 1, from.col + 1});
-            }
-
-            break;
-        case BlackPawn:
-            possible_moves.push_back({from.row - 1, from.col});
-
-            if (from.row == 6)
-            {
-                possible_moves.push_back({from.row - 2, from.col});
-            }
-
-            if (m_state.get(from.row - 1, from.col - 1) != Empty &&
-                m_state.get(from.row - 1, from.col - 1) != OutOfBounds) {
-                possible_moves.push_back({from.row - 1, from.col - 1});
-            }
-
-            if (m_state.get(from.row - 1, from.col + 1) != Empty &&
-                m_state.get(from.row - 1, from.col + 1) != OutOfBounds) {
-                possible_moves.push_back({from.row - 1, from.col + 1});
-            }
-            
-            break;
-        case WhiteRook:
-        case BlackRook:
-        {
-            std::vector<Square> directions;
-            directions.push_back({1, 0});
-            directions.push_back({-1, 0});
-            directions.push_back({0, 1});
-            directions.push_back({0, -1});
-
-            for (const Square& direction : directions)
-            {
-                int vertical_distance = 1;
-                int horizontal_distance = 1;
-
-                Square to = {from.row + (direction.row * vertical_distance),
-                             from.col + (direction.col * horizontal_distance)};
-
-                while (m_state.check_move(from, to))
-                {
-                    possible_moves.push_back(to);
-
-                    vertical_distance++;
-                    horizontal_distance++;
-                    to = {from.row + (direction.row * vertical_distance),
-                          from.col + (direction.col * horizontal_distance)};
-                }
-            }
-
-            break;
-        }
-        case WhiteBishop:
-        case BlackBishop:
-        {
-            std::vector<Square> directions;
-            directions.push_back({1, 1});
-            directions.push_back({-1, -1});
-            directions.push_back({-1, 1});
-            directions.push_back({1, -1});
-
-            for (const Square& direction : directions)
-            {
-                int vertical_distance = 1;
-                int horizontal_distance = 1;
-
-                Square to = {from.row + (direction.row * vertical_distance),
-                             from.col + (direction.col * horizontal_distance)};
-
-                while (m_state.check_move(from, to))
-                {
-                    possible_moves.push_back(to);
-
-                    vertical_distance++;
-                    horizontal_distance++;
-                    to = {from.row + (direction.row * vertical_distance),
-                          from.col + (direction.col * horizontal_distance)};
-                }
-            }
-
-            break;
-        }
-        case WhiteKnight:
-        case BlackKnight:
-            break;
-        case WhiteKing:
-        case BlackKing:
-            break;
-        case WhiteQueen:
-        case BlackQueen:
-        {
-            std::vector<Square> directions;
-            directions.push_back({1, 1});
-            directions.push_back({-1, -1});
-            directions.push_back({-1, 1});
-            directions.push_back({1, -1});
-            directions.push_back({1, 0});
-            directions.push_back({-1, 0});
-            directions.push_back({0, 1});
-            directions.push_back({0, -1});
-
-            for (const Square& direction : directions)
-            {
-                int vertical_distance = 1;
-                int horizontal_distance = 1;
-
-                Square to = {from.row + (direction.row * vertical_distance),
-                             from.col + (direction.col * horizontal_distance)};
-
-                while (m_state.check_move(from, to))
-                {
-                    possible_moves.push_back(to);
-
-                    vertical_distance++;
-                    horizontal_distance++;
-                    to = {from.row + (direction.row * vertical_distance),
-                          from.col + (direction.col * horizontal_distance)};
-                }
-            }
-
-            break;
-        }
-        case Empty:
-        case OutOfBounds:
-        default:
-            break;
+        return m_state[i];
     }
 
-    return possible_moves;
-}
-
-bool Game::move(Square from_index, Square to_index)
-{
-    Piece piece = m_state.get(from_index);
-
-    // Check if it was this players turn.
-    if ((m_turn % 2 == 1 && is_white(piece) == 0) || 
-        (m_turn % 2 == 0 && is_white(piece) == 1))
+    Piece& Game::operator[](const Square& s)
     {
-        return false;
-    }
-    
-    std::vector<Square> possible_moves = get_possible_moves(from_index);
-
-    bool legal = false;
-    for (Square possible_move : possible_moves)
-    {
-        if (possible_move.row == to_index.row &&
-            possible_move.col == to_index.col)
-        {
-                legal = true;
-        }
+        int row = 0;
+        int col = 0;
+        col = s[0] - 'a';
+        row = s[1] - '1';
+        int i = row * 8 + col;
+        return m_state[i];
     }
 
-    // Actually persist the move
-    if (legal)
+    Piece& Game::operator()(int row, int col)
     {
-        m_state.move(from_index, to_index);
-        m_turn++;
+        int i = row * 8 + col;
+        return m_state[i];
     }
 
-    return legal;
-}
-
-int Game::get_turn()
-{
-    return m_turn;
-}
-  
 }}
