@@ -84,13 +84,7 @@ namespace chessed { namespace chess {
 
     bool Game::move(const Square& from, const Square& to, Move& info)
     {
-        /**
-         * This is misleading. Looks like we are returning false
-         * when the correct color is moving but turn() returns 0
-         * when it is whites turn and is_white() returns 1 when 
-         * the piece being moved is white.
-         */
-        if (is_white((*this)[from]) == turn())
+        if (color((*this)[from]) != turn())
             return false;
 
         info.to = to;

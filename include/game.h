@@ -32,7 +32,7 @@ struct Move {
     Square to;
 };
 
-inline int is_white(Piece p)
+inline int color(Piece p)
 {
     switch (p)
     {
@@ -42,14 +42,14 @@ inline int is_white(Piece p)
         case WhiteRook:
         case WhiteQueen:
         case WhiteKing:
-            return 1;
+            return 0;
         case BlackPawn:
         case BlackKnight:
         case BlackBishop:
         case BlackRook:
         case BlackQueen:
         case BlackKing:
-            return 0;
+            return 1;
         case Empty:
         default:
             return -1;
