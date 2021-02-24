@@ -67,3 +67,18 @@ TEST_CASE("Ensure turn changes on each move", "[game]")
     REQUIRE(game.turn() == 1);
     
 }
+
+TEST_CASE("Ensure player can't move out of turn", "[game]")
+{
+    Game game;
+    Move info;
+    bool valid = game.move("a2", "a3", info);
+    REQUIRE(valid);
+
+    valid = game.move("a3", "a4", info);
+    REQUIRE_FALSE(valid);
+    
+    valid = game.move("a3", "a4", info);
+    REQUIRE_FALSE(valid);
+    
+}
