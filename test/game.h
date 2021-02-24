@@ -25,4 +25,3 @@ TEST_CASE("Index operators work", "[game]") {
     REQUIRE(game["h8"] == BlackRook);
     REQUIRE(game(7, 7) == BlackRook);
 }
-

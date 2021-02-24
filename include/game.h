@@ -26,7 +26,7 @@ enum Piece {
 struct Move {
     bool is_check;
     bool is_mate;
-    bool promoting;
+    bool is_promoting;
     Piece captured;
     Square from;
     Square to;
@@ -60,7 +60,7 @@ class Game {
 
 public:
     Game();
-    
+
     void init_with_fen(const std::string& fen);
     void init_with_pgn(const std::string& pgn) {};
     std::string to_fen() { return ""; };
@@ -71,6 +71,7 @@ public:
 
     int turn();
     int move_num();
+    int half_moves();
 
     // Accessors
     Piece& operator[](int);
@@ -79,7 +80,7 @@ public:
 
 private:
     std::array<Piece, 64> m_state;
-    int m_turn;
+    int m_half_moves;
 
 };
 
