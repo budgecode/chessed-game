@@ -74,7 +74,7 @@ namespace chessed { namespace chess {
 
     int Game::move_num()
     {
-        return m_half_moves / 2;
+        return m_half_moves / 2 + 1;
     }
 
     int Game::turn()
