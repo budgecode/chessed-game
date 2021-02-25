@@ -2,12 +2,15 @@
 
 #include <string>
 #include <array>
+#include <unordered_set>
 
 namespace chessed { namespace chess {
 
 typedef std::string Square;
+typedef std::unordered_set<Square> Squares;
 
 enum Piece {
+    OutOfBounds,
     Empty,
     WhiteKing,
     WhiteQueen,
@@ -69,18 +72,35 @@ public:
     bool move(const Square& from, const Square& to, Move& info);
     bool validate_move(const Square& from, const Square& to, Move& info);
 
-    int turn();
-    int move_num();
-    int half_moves();
+    int get_turn();
+    int get_move_num();
+    int get_half_moves();
+
+    Squares get_possible_moves(const Square& from);
 
     // Accessors
     Piece& operator[](int);
     Piece& operator[](const Square&);
-    Piece& operator()(int, int); 
+    Piece& operator()(int, int);
 
 private:
     std::array<Piece, 64> m_state;
     int m_half_moves;
+    Piece oob = OutOfBounds;
+    
+    int get_row(const Square& s);
+    int get_col(const Square& s);
+    int to_index(int row, int col);
+    bool empty_or_oob(const Piece& p);
+
+    Square to_square(int row, int col);
+
+    Squares get_moves_for_pawn(const Square& from);
+    Squares get_moves_for_bishop(const Square& from);
+    Squares get_moves_for_knight(const Square& from);
+    Squares get_moves_for_rook(const Square& from);
+    Squares get_moves_for_queen(const Square& from);
+    Squares get_moves_for_king(const Square& from);
 
 };
 

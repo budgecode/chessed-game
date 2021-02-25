@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <cassert>
 #include "../include/game.h"
 
 namespace chessed { namespace chess {
@@ -48,43 +48,55 @@ namespace chessed { namespace chess {
 
     Piece& Game::operator[](int i)
     {
+        if (i > 63 || i < 0)
+            return oob;
         return m_state[i];
     }
 
     Piece& Game::operator[](const Square& s)
     {
-        int row = 0;
-        int col = 0;
-        col = s[0] - 'a';
-        row = s[1] - '1';
+        int col = s[0] - 'a';
+        int row = s[1] - '1';
         int i = row * 8 + col;
+        if (row < 0 || row > 7 ||
+            col < 0 || col > 7)
+            return oob;
+
         return m_state[i];
     }
 
     Piece& Game::operator()(int row, int col)
     {
+        if (row < 0 || row > 7 ||
+            col < 0 || col > 7)
+            return oob;
+
         int i = row * 8 + col;
         return m_state[i];
     }
 
-    int Game::half_moves()
+    int Game::get_half_moves()
     {
         return m_half_moves;
     }
 
-    int Game::move_num()
+    int Game::get_move_num()
     {
         return m_half_moves / 2 + 1;
     }
 
-    int Game::turn()
+    int Game::get_turn()
     {
         return m_half_moves % 2; // 0 for white, 1 for black.
     }
 
     bool Game::move(const Square& from, const Square& to, Move& info)
     {
-        if (color((*this)[from]) != turn())
+        if (color((*this)[from]) != get_turn())
+            return false;
+
+        Squares possible_moves = get_possible_moves(from);
+        if (possible_moves.find(to) == possible_moves.end())
             return false;
 
         info.to = to;
@@ -101,4 +113,78 @@ namespace chessed { namespace chess {
 
         return true;
     }
+
+    Squares Game::get_possible_moves(const Square& from)
+    {
+        if ((*this)[from] == WhitePawn ||
+            (*this)[from] == BlackPawn)
+        {
+            return get_moves_for_pawn(from);
+        }
+        else
+        {
+            Squares squares;
+            return squares;
+        }
+    }
+
+    // Private methods
+    int Game::get_row(const Square& s)
+    {
+        return s[1] - '1';
+    }
+
+    int Game::get_col(const Square& s)
+    {
+        return s[0] - 'a';
+    }
+
+    int Game::to_index(int row, int col)
+    {
+        return row * 8 + col;
+    }
+
+    Square Game::to_square(int row, int col)
+    {
+        Square s = "";
+        s += 'a' + col;
+        s += '1' + row;
+        return s;
+    }
+
+    bool Game::empty_or_oob(const Piece& p)
+    {
+        return p == Empty || p == OutOfBounds;
+    }
+
+    Squares Game::get_moves_for_pawn(const Square& from)
+    {
+        Squares squares;
+        int row = get_row(from);
+        int col = get_col(from);
+        
+        int c = color((*this)[from]);
+        assert(c != -1); // This should not happen.
+        
+        int direction = 1;
+        if (c == 1) // black
+        {
+            direction = -1;
+        }
+
+        if ((*this)(row + direction, col) == Empty)
+            squares.insert(to_square(row + direction, col));
+            
+        Piece& right_diagonal = (*this)(row + direction, col + 1);
+        Piece& left_diagonal = (*this)(row + direction, col - 1);
+
+        if (!empty_or_oob(left_diagonal) && color(left_diagonal) != c)
+            squares.insert(to_square(row + direction, col + 1));
+
+        if (!empty_or_oob(right_diagonal) && color(right_diagonal) != c)
+            squares.insert(to_square(row + direction, col - 1));
+
+        return squares;
+    }
+
 }}
