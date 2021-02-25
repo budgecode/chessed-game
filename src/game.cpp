@@ -159,6 +159,11 @@ namespace chessed { namespace chess {
 
     Squares Game::get_moves_for_pawn(const Square& from)
     {
+        /**
+         * @to-do:
+         * 1. Add support for en-passant.
+         * 2. Add support for promotion.
+         */
         Squares squares;
         int row = get_row(from);
         int col = get_col(from);
@@ -187,6 +192,64 @@ namespace chessed { namespace chess {
 
         if (!empty_or_oob(right_diagonal) && color(right_diagonal) != c)
             squares.insert(to_square(row + direction, col + 1));
+
+        return squares;
+    }
+
+    Squares Game::get_moves_for_bishop(const Square& from)
+    {
+        Squares squares;
+        int row = get_row(from);
+        int col = get_col(from);
+        int c = color((*this)[from]);
+
+        int i = 1;
+        int r_dir = -1;
+        int c_dir = -1;
+        while ((*this)(row + i * r_dir, col + i * c_dir) == Empty)
+        {
+            squares.insert(to_square(row + i * r_dir, col + i * c_dir));
+            i++;
+        }
+
+        if (color((*this)(row + i * r_dir, col + i * c_dir)) != c)
+            squares.insert(to_square(row + i * r_dir, col + i * c_dir));
+
+        i = 1;
+        r_dir = 1;
+        c_dir = -1;
+        while ((*this)(row + i * r_dir, col + i * c_dir) == Empty)
+        {
+            squares.insert(to_square(row + i * r_dir, col + i * c_dir));
+            i++;
+        }
+
+        if (color((*this)(row + i * r_dir, col + i * c_dir)) != c)
+            squares.insert(to_square(row + i * r_dir, col + i * c_dir));
+
+        i = 1;
+        r_dir = -1;
+        c_dir = 1;
+        while ((*this)(row + i * r_dir, col + i * c_dir) == Empty)
+        {
+            squares.insert(to_square(row + i * r_dir, col + i * c_dir));
+            i++;
+        }
+
+        if (color((*this)(row + i * r_dir, col + i * c_dir)) != c)
+            squares.insert(to_square(row + i * r_dir, col + i * c_dir));
+
+        i = 1;
+        r_dir = 1;
+        c_dir = 1;
+        while ((*this)(row + i * r_dir, col + i * c_dir) == Empty)
+        {
+            squares.insert(to_square(row + i * r_dir, col + i * c_dir));
+            i++;
+        }
+
+        if (color((*this)(row + i * r_dir, col + i * c_dir)) != c)
+            squares.insert(to_square(row + i * r_dir, col + i * c_dir));
 
         return squares;
     }

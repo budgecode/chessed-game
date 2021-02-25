@@ -54,6 +54,7 @@ inline int color(Piece p)
         case BlackKing:
             return 1;
         case Empty:
+        case OutOfBounds:
         default:
             return -1;
     }
