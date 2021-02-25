@@ -198,6 +198,12 @@ namespace chessed { namespace chess {
 
     Squares Game::get_moves_for_bishop(const Square& from)
     {
+        /**
+         * @to-do:
+         * 1. Write tests for basic bishop movement
+         * 2. Write tests for capturing with bishop
+         * 3. Write tests to make sure bishop can't jump pieces
+         */
         Squares squares;
         int row = get_row(from);
         int col = get_col(from);
