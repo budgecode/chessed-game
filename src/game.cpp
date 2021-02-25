@@ -174,7 +174,11 @@ namespace chessed { namespace chess {
 
         if ((*this)(row + direction, col) == Empty)
             squares.insert(to_square(row + direction, col));
-            
+    
+        if ((c == 0 && row == 1 && (*this)(row + direction * 2, col) == Empty) ||
+            (c == 1 && row == 6 && (*this)(row + direction * 2, col) == Empty))
+            squares.insert(to_square(row + direction * 2, col));
+
         Piece& right_diagonal = (*this)(row + direction, col + 1);
         Piece& left_diagonal = (*this)(row + direction, col - 1);
 

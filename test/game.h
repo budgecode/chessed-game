@@ -96,4 +96,15 @@ TEST_CASE("Ensure pawns move correctly", "[game]")
         REQUIRE(valid);
     }
     
+    SECTION("pawn can move forward two spaces to empty spot from starting position")
+    {
+        Game game;
+        Move info;
+        bool valid = game.move("a2", "a4", info);
+        REQUIRE(valid);
+
+        valid = game.move("h7", "h5", info);
+        REQUIRE(valid);
+    }
+
 }
