@@ -107,4 +107,18 @@ TEST_CASE("Ensure pawns move correctly", "[game]")
         REQUIRE(valid);
     }
 
+    SECTION("pawns can capture")
+    {
+        Game game;
+        Move info;
+        bool valid = game.move("a2", "a4", info);
+        REQUIRE(valid);
+
+        valid = game.move("b7", "b5", info);
+        REQUIRE(valid);
+
+        valid = game.move("a4", "b5", info);
+        REQUIRE(valid);
+    }
+
 }

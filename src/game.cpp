@@ -183,10 +183,10 @@ namespace chessed { namespace chess {
         Piece& left_diagonal = (*this)(row + direction, col - 1);
 
         if (!empty_or_oob(left_diagonal) && color(left_diagonal) != c)
-            squares.insert(to_square(row + direction, col + 1));
+            squares.insert(to_square(row + direction, col - 1));
 
         if (!empty_or_oob(right_diagonal) && color(right_diagonal) != c)
-            squares.insert(to_square(row + direction, col - 1));
+            squares.insert(to_square(row + direction, col + 1));
 
         return squares;
     }
