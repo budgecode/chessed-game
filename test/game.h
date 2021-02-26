@@ -122,3 +122,56 @@ TEST_CASE("Ensure pawns move correctly", "[game]")
     }
 
 }
+
+TEST_CASE("Ensure bishops move correctly", "[game]")
+{
+    SECTION("bishops can't move through pieces")
+    {
+        Game game;
+        Move info;
+        bool valid = game.move("c1", "a3", info);
+        REQUIRE_FALSE(valid);
+
+        valid = game.move("c8", "a6", info);
+        REQUIRE_FALSE(valid);
+
+        valid = game.move("f1", "d3", info);
+        REQUIRE_FALSE(valid);
+
+        valid = game.move("c1", "d2", info);
+        REQUIRE_FALSE(valid);
+
+        valid = game.move("f1", "h3", info);
+        REQUIRE_FALSE(valid);
+
+        valid = game.move("f8", "e7", info);
+        REQUIRE_FALSE(valid);
+
+        valid = game.move("c8", "e6", info);
+        REQUIRE_FALSE(valid);
+
+        valid = game.move("f8", "g7", info);
+        REQUIRE_FALSE(valid);
+    }
+
+    SECTION("bishops can move on diagonals")
+    {
+        Game game;
+        Move info;
+        
+        bool valid = game.move("d2", "d4", info);
+        REQUIRE(valid);
+        
+        valid = game.move("e7", "e5", info);
+        REQUIRE(valid);
+
+        valid = game.move("e2", "e4", info);
+        REQUIRE(valid);
+
+        valid = game.move("d7", "d5", info);
+        REQUIRE(valid);
+
+        valid = game.move("c1", "d2", info);
+        REQUIRE(valid);
+    }
+}
