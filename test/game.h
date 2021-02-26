@@ -173,5 +173,68 @@ TEST_CASE("Ensure bishops move correctly", "[game]")
 
         valid = game.move("c1", "d2", info);
         REQUIRE(valid);
+
+        valid = game.move("f8", "c5", info);
+        REQUIRE(valid);
+    }
+
+    SECTION("bishops can capture on diagonals")
+    {
+        Game game;
+        Move info;
+        
+        bool valid = game.move("d2", "d4", info);
+        REQUIRE(valid);
+        
+        valid = game.move("e7", "e5", info);
+        REQUIRE(valid);
+
+        valid = game.move("e2", "e4", info);
+        REQUIRE(valid);
+
+        valid = game.move("d7", "d5", info);
+        REQUIRE(valid);
+
+        valid = game.move("c1", "g5", info);
+        REQUIRE(valid);
+        
+        valid = game.move("f8", "c5", info);
+        REQUIRE(valid);
+
+        valid = game.move("g5", "d8", info);
+        REQUIRE(valid);
+
+        valid = game.move("c5", "d4", info);
+        REQUIRE(valid);
+    }
+
+    SECTION("bishops can't make illegal moves")
+    {
+        Game game;
+        Move info;
+        
+        bool valid = game.move("d2", "d4", info);
+        REQUIRE(valid);
+        
+        valid = game.move("e7", "e5", info);
+        REQUIRE(valid);
+
+        valid = game.move("e2", "e4", info);
+        REQUIRE(valid);
+
+        valid = game.move("d7", "d5", info);
+        REQUIRE(valid);
+
+        valid = game.move("c1", "g5", info);
+        REQUIRE(valid);
+        
+        valid = game.move("f8", "c5", info);
+        REQUIRE(valid);
+
+        valid = game.move("g5", "g6", info);
+        REQUIRE_FALSE(valid);
+
+        valid = game.move("c5", "e2", info);
+        REQUIRE_FALSE(valid);
     }
 }

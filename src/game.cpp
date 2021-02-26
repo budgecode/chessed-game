@@ -85,9 +85,9 @@ namespace chessed { namespace chess {
         return m_half_moves / 2 + 1;
     }
 
-    int Game::get_turn()
+    Color Game::get_turn()
     {
-        return m_half_moves % 2; // 0 for white, 1 for black.
+        return m_half_moves % 2 == 0 ? White : Black;
     }
 
     bool Game::move(const Square& from, const Square& to, Move& info)
@@ -173,11 +173,11 @@ namespace chessed { namespace chess {
         int row = get_row(from);
         int col = get_col(from);
         
-        int c = color((*this)[from]);
-        assert(c != -1); // This should not happen.
+        Color c = color((*this)[from]);
+        assert(c != None); // This should not happen.
         
         int direction = 1;
-        if (c == 1) // black
+        if (c == Black)
         {
             direction = -1;
         }
@@ -207,12 +207,11 @@ namespace chessed { namespace chess {
          * @to-do:
          * 1. Write tests for basic bishop movement
          * 2. Write tests for capturing with bishop
-         * 3. Write tests to make sure bishop can't jump pieces
          */
         Squares squares;
         int row = get_row(from);
         int col = get_col(from);
-        int c = color((*this)[from]);
+        Color c = color((*this)[from]);
 
         int i = 1;
         int r_dir = -1;

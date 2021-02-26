@@ -1,30 +1,8 @@
 #pragma once
 
-#include <string>
-#include <array>
-#include <unordered_set>
+#include "utils.h"
 
 namespace chessed { namespace chess {
-
-typedef std::string Square;
-typedef std::unordered_set<Square> Squares;
-
-enum Piece {
-    OutOfBounds,
-    Empty,
-    WhiteKing,
-    WhiteQueen,
-    WhiteBishop,
-    WhiteRook,
-    WhiteKnight,
-    WhitePawn,
-    BlackKing,
-    BlackQueen,
-    BlackBishop,
-    BlackRook,
-    BlackKnight,
-    BlackPawn
-};
 
 struct Move {
     bool is_check;
@@ -34,31 +12,6 @@ struct Move {
     Square from;
     Square to;
 };
-
-inline int color(Piece p)
-{
-    switch (p)
-    {
-        case WhitePawn:
-        case WhiteKnight:
-        case WhiteBishop:
-        case WhiteRook:
-        case WhiteQueen:
-        case WhiteKing:
-            return 0;
-        case BlackPawn:
-        case BlackKnight:
-        case BlackBishop:
-        case BlackRook:
-        case BlackQueen:
-        case BlackKing:
-            return 1;
-        case Empty:
-        case OutOfBounds:
-        default:
-            return -1;
-    }
-}
 
 class Game {
 
@@ -73,7 +26,7 @@ public:
     bool move(const Square& from, const Square& to, Move& info);
     bool validate_move(const Square& from, const Square& to, Move& info);
 
-    int get_turn();
+    Color get_turn();
     int get_move_num();
     int get_half_moves();
 
@@ -85,7 +38,7 @@ public:
     Piece& operator()(int, int);
 
 private:
-    std::array<Piece, 64> m_state;
+    GameState m_state;
     int m_half_moves;
     Piece oob = OutOfBounds;
     
