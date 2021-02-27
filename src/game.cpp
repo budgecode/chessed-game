@@ -157,11 +157,6 @@ namespace chessed { namespace chess {
         return s;
     }
 
-    bool Game::empty_or_oob(const Piece& p)
-    {
-        return p == Empty || p == OutOfBounds;
-    }
-
     Squares Game::get_moves_for_pawn(const Square& from)
     {
         /**
@@ -203,19 +198,35 @@ namespace chessed { namespace chess {
 
     Squares Game::get_moves_for_bishop(const Square& from)
     {
-        /**
-         * @to-do:
-         * 1. Write tests for basic bishop movement
-         * 2. Write tests for capturing with bishop
-         */
         Squares squares;
+
+        int r_dir = -1;
+        int c_dir = -1;
+        get_moves_for_dir(from, r_dir, c_dir, squares);
+
+        r_dir = 1;
+        c_dir = -1;
+        get_moves_for_dir(from, r_dir, c_dir, squares);
+
+
+        r_dir = -1;
+        c_dir = 1;
+        get_moves_for_dir(from, r_dir, c_dir, squares);
+
+        r_dir = 1;
+        c_dir = 1;
+        get_moves_for_dir(from, r_dir, c_dir, squares);
+
+        return squares;
+    }
+
+    void Game::get_moves_for_dir(const Square& from, int r_dir, int c_dir, Squares& squares)
+    {
         int row = get_row(from);
         int col = get_col(from);
         Color c = color((*this)[from]);
 
         int i = 1;
-        int r_dir = -1;
-        int c_dir = -1;
         Piece curr = Empty;
         while ((curr = (*this)(row + i * r_dir, col + i * c_dir)) == Empty)
         {
@@ -225,44 +236,6 @@ namespace chessed { namespace chess {
 
         if (curr != OutOfBounds && color(curr) != c)
             squares.insert(to_square(row + i * r_dir, col + i * c_dir));
-
-        i = 1;
-        r_dir = 1;
-        c_dir = -1;
-        while ((curr = (*this)(row + i * r_dir, col + i * c_dir)) == Empty)
-        {
-            squares.insert(to_square(row + i * r_dir, col + i * c_dir));
-            i++;
-        }
-
-        if (curr != OutOfBounds && color(curr) != c)
-            squares.insert(to_square(row + i * r_dir, col + i * c_dir));
-
-        i = 1;
-        r_dir = -1;
-        c_dir = 1;
-        while ((curr = (*this)(row + i * r_dir, col + i * c_dir)) == Empty)
-        {
-            squares.insert(to_square(row + i * r_dir, col + i * c_dir));
-            i++;
-        }
-
-        if (curr != OutOfBounds && color(curr) != c)
-            squares.insert(to_square(row + i * r_dir, col + i * c_dir));
-
-        i = 1;
-        r_dir = 1;
-        c_dir = 1;
-        while ((curr = (*this)(row + i * r_dir, col + i * c_dir)) == Empty)
-        {
-            squares.insert(to_square(row + i * r_dir, col + i * c_dir));
-            i++;
-        }
-
-        if (curr != OutOfBounds && color(curr) != c)
-            squares.insert(to_square(row + i * r_dir, col + i * c_dir));
-
-        return squares;
     }
 
 }}

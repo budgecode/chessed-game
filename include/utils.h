@@ -60,4 +60,9 @@ inline Color color(Piece p)
     }
 }
 
+inline bool empty_or_oob(const Piece& p)
+{
+    return p == Empty || p == OutOfBounds;
+}
+
 }}

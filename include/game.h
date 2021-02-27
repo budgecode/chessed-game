@@ -45,7 +45,6 @@ private:
     int get_row(const Square& s);
     int get_col(const Square& s);
     int to_index(int row, int col);
-    bool empty_or_oob(const Piece& p);
 
     Square to_square(int row, int col);
 
@@ -56,6 +55,7 @@ private:
     Squares get_moves_for_queen(const Square& from);
     Squares get_moves_for_king(const Square& from);
 
+    void get_moves_for_dir(const Square& from, int r_dir, int c_dir, Squares& squares);
 };
 
 }}
