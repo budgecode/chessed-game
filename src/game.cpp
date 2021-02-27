@@ -133,6 +133,11 @@ namespace chessed { namespace chess {
         }
     }
 
+    const GameState& Game::get_game_state()
+    {
+        return m_state;
+    }
+
     // Private methods
     int Game::get_row(const Square& s)
     {

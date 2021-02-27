@@ -32,6 +32,8 @@ public:
 
     Squares get_possible_moves(const Square& from);
 
+    const GameState& get_game_state();
+
     // Accessors
     Piece& operator[](int);
     Piece& operator[](const Square&);
