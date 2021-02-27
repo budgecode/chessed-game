@@ -238,3 +238,92 @@ TEST_CASE("Ensure bishops move correctly", "[game]")
         REQUIRE_FALSE(valid);
     }
 }
+
+
+TEST_CASE("Ensure rooks move correctly", "[game]")
+{
+    SECTION("rooks can't move through pieces")
+    {
+        Game game;
+        Move info;
+        bool valid = game.move("a1", "a3", info);
+        REQUIRE_FALSE(valid);
+
+        valid = game.move("a8", "a6", info);
+        REQUIRE_FALSE(valid);
+
+        valid = game.move("h1", "h3", info);
+        REQUIRE_FALSE(valid);
+
+        valid = game.move("h8", "h6", info);
+        REQUIRE_FALSE(valid);
+    }
+
+    SECTION("rooks can move on rows and columns")
+    {
+        Game game;
+        Move info;
+        
+        bool valid = game.move("a2", "a4", info);
+        REQUIRE(valid);
+        
+        valid = game.move("a7", "a5", info);
+        REQUIRE(valid);
+
+        valid = game.move("h2", "h4", info);
+        REQUIRE(valid);
+
+        valid = game.move("h7", "h5", info);
+        REQUIRE(valid);
+
+        valid = game.move("a1", "a3", info);
+        REQUIRE(valid);
+
+        valid = game.move("a8", "a6", info);
+        REQUIRE(valid);
+
+        valid = game.move("h1", "h3", info);
+        REQUIRE(valid);
+
+        valid = game.move("h8", "h6", info);
+        REQUIRE(valid);
+
+        valid = game.move("a3", "b3", info);
+        REQUIRE(valid);
+
+        valid = game.move("a6", "c6", info);
+        REQUIRE(valid);
+        
+        valid = game.move("h3", "g3", info);
+        REQUIRE(valid);
+
+        valid = game.move("h6", "f6", info);
+        REQUIRE(valid);
+
+    }
+
+    SECTION("rooks can capture on rows and columns")
+    {
+        Game game;
+        Move info;
+        
+        bool valid = game.move("a2", "a4", info);
+        valid = game.move("a7", "a5", info);
+        valid = game.move("h2", "h4", info);
+        valid = game.move("h7", "h5", info);
+        valid = game.move("a1", "a3", info);
+        valid = game.move("a8", "a6", info);
+        valid = game.move("h1", "h3", info);
+        valid = game.move("h8", "h6", info);
+        valid = game.move("a3", "c3", info);
+        valid = game.move("a6", "c6", info);
+        valid = game.move("h3", "f3", info);
+        valid = game.move("h6", "f6", info);
+        
+        valid = game.move("f3", "f6", info);
+        REQUIRE(valid);
+
+        valid = game.move("c6", "c3", info);
+        REQUIRE(valid);
+    }
+}

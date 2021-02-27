@@ -233,10 +233,25 @@ namespace chessed { namespace chess {
 
     Squares Game::get_moves_for_rook(const Square& from)
     {
-        /**
-         * @to-do: implement
-         */
         Squares squares;
+
+        int r_dir = -1;
+        int c_dir = 0;
+        get_moves_for_dir(from, r_dir, c_dir, squares);
+
+        r_dir = 1;
+        c_dir = 0;
+        get_moves_for_dir(from, r_dir, c_dir, squares);
+
+
+        r_dir = 0;
+        c_dir = -1;
+        get_moves_for_dir(from, r_dir, c_dir, squares);
+
+        r_dir = 0;
+        c_dir = 1;
+        get_moves_for_dir(from, r_dir, c_dir, squares);
+
         return squares;
     }
 
