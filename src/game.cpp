@@ -126,6 +126,12 @@ namespace chessed { namespace chess {
         {
             return get_moves_for_bishop(from);
         }
+        
+        else if ((*this)[from] == WhiteRook ||
+                 (*this)[from] == BlackRook)
+        {
+            return get_moves_for_rook(from);
+        }
         else
         {
             Squares squares;
@@ -222,6 +228,15 @@ namespace chessed { namespace chess {
         c_dir = 1;
         get_moves_for_dir(from, r_dir, c_dir, squares);
 
+        return squares;
+    }
+
+    Squares Game::get_moves_for_rook(const Square& from)
+    {
+        /**
+         * @to-do: implement
+         */
+        Squares squares;
         return squares;
     }
 
