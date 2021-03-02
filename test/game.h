@@ -239,7 +239,6 @@ TEST_CASE("Ensure bishops move correctly", "[game]")
     }
 }
 
-
 TEST_CASE("Ensure rooks move correctly", "[game]")
 {
     SECTION("rooks can't move through pieces")
