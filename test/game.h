@@ -326,3 +326,92 @@ TEST_CASE("Ensure rooks move correctly", "[game]")
         REQUIRE(valid);
     }
 }
+
+TEST_CASE("Ensure queens move correctly", "[game]")
+{
+    SECTION("queens can't move through pieces")
+    {
+        Game game;
+        Move info;
+        bool valid = game.move("d1", "d3", info);
+        REQUIRE_FALSE(valid);
+
+        valid = game.move("d8", "d6", info);
+        REQUIRE_FALSE(valid);
+    }
+
+    SECTION("queens can move on rows and columns")
+    {
+        Game game;
+        Move info;
+        
+        bool valid = game.move("d2", "d4", info);
+        valid = game.move("d7", "d5", info);
+
+        valid = game.move("d1", "d3", info);
+        REQUIRE(valid);
+
+        valid = game.move("d8", "d6", info);
+        REQUIRE(valid);
+        
+        valid = game.move("d3", "h3", info);
+        REQUIRE(valid);
+
+        valid = game.move("d6", "h6", info);
+        REQUIRE(valid);
+    }
+
+    SECTION("queens can capture on rows and columns")
+    {
+        Game game;
+        Move info;
+        
+        bool valid = game.move("d2", "d4", info);
+        valid = game.move("d7", "d5", info);
+        valid = game.move("d1", "d3", info);
+        valid = game.move("d8", "d6", info);
+        valid = game.move("d3", "h3", info);
+        valid = game.move("d6", "h6", info);
+
+        valid = game.move("h3", "c8", info);
+        REQUIRE(valid);
+
+        valid = game.move("h6", "c1", info);
+        REQUIRE(valid);
+
+    }
+
+    SECTION("queens can move on diagonals")
+    {
+        Game game;
+        Move info;
+        
+        bool valid = game.move("c2", "c4", info);
+        valid = game.move("c7", "c5", info);
+
+        valid = game.move("d1", "a4", info);
+        REQUIRE(valid);
+
+        valid = game.move("d8", "a5", info);
+        REQUIRE(valid);
+    }
+
+    SECTION("queens can capture on diagonals")
+    {
+        Game game;
+        Move info;
+        
+        bool valid = game.move("c2", "c4", info);
+        valid = game.move("c7", "c5", info);
+        valid = game.move("d1", "a4", info);
+        valid = game.move("d8", "a5", info);
+        
+        valid = game.move("a4", "d7", info);
+        REQUIRE(valid);
+
+        valid = game.move("a5", "d2", info);
+        REQUIRE(valid);
+
+    }
+
+}

@@ -126,11 +126,15 @@ namespace chessed { namespace chess {
         {
             return get_moves_for_bishop(from);
         }
-        
         else if ((*this)[from] == WhiteRook ||
                  (*this)[from] == BlackRook)
         {
             return get_moves_for_rook(from);
+        }
+        else if ((*this)[from] == WhiteQueen ||
+                 (*this)[from] == BlackQueen)
+        {
+            return get_moves_for_queen(from);
         }
         else
         {
@@ -249,6 +253,47 @@ namespace chessed { namespace chess {
         get_moves_for_dir(from, r_dir, c_dir, squares);
 
         r_dir = 0;
+        c_dir = 1;
+        get_moves_for_dir(from, r_dir, c_dir, squares);
+
+        return squares;
+    }
+
+    Squares Game::get_moves_for_queen(const Square& from)
+    {
+        Squares squares;
+
+        int r_dir = -1;
+        int c_dir = 0;
+        get_moves_for_dir(from, r_dir, c_dir, squares);
+
+        r_dir = 1;
+        c_dir = 0;
+        get_moves_for_dir(from, r_dir, c_dir, squares);
+
+
+        r_dir = 0;
+        c_dir = -1;
+        get_moves_for_dir(from, r_dir, c_dir, squares);
+
+        r_dir = 0;
+        c_dir = 1;
+        get_moves_for_dir(from, r_dir, c_dir, squares);
+
+        r_dir = -1;
+        c_dir = -1;
+        get_moves_for_dir(from, r_dir, c_dir, squares);
+
+        r_dir = 1;
+        c_dir = -1;
+        get_moves_for_dir(from, r_dir, c_dir, squares);
+
+
+        r_dir = -1;
+        c_dir = 1;
+        get_moves_for_dir(from, r_dir, c_dir, squares);
+
+        r_dir = 1;
         c_dir = 1;
         get_moves_for_dir(from, r_dir, c_dir, squares);
 
