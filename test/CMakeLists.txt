@@ -1,5 +1,5 @@
-FIND_PACKAGE(Catch2 REQUIRED)
+find_package(Catch2 CONFIG REQUIRED)
 
-ADD_EXECUTABLE(tests test.cpp)
+add_executable(tests test.cpp)
 
-TARGET_LINK_LIBRARIES(tests ChessedGame Catch2::Catch2)
+target_link_libraries(tests PRIVATE ChessedGame Catch2::Catch2)

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-
 #include <catch2/catch.hpp>
 
 #include "../include/game.h"
