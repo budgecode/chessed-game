@@ -359,6 +359,65 @@ namespace chessed { namespace chess {
         return squares;
     }
 
+    Squares Game::get_moves_for_knight(const Square& from)
+    {
+        Squares squares;
+        int row = get_row(from);
+        int col = get_col(from);
+        Color c = color((*this)[from]);
+        
+        Piece curr = Empty;
+        if ((curr = (*this)(row + 1, col + 2)) == Empty ||
+            color(curr) != c)
+        {
+            squares.insert(to_square(row + 1, col + 2));
+        }
+        
+        if ((curr = (*this)(row + 2, col + 1)) == Empty ||
+            color(curr) != c)
+        {
+            squares.insert(to_square(row + 2, col + 1));
+        }
+
+        if ((curr = (*this)(row - 1, col + 2)) == Empty ||
+            color(curr) != c)
+        {
+            squares.insert(to_square(row - 1, col + 2));
+        }
+        
+        if ((curr = (*this)(row + 2, col - 1)) == Empty ||
+            color(curr) != c)
+        {
+            squares.insert(to_square(row + 2, col - 1));
+        }
+
+        if ((curr = (*this)(row - 2, col + 1)) == Empty ||
+            color(curr) != c)
+        {
+            squares.insert(to_square(row - 2, col + 1));
+        }
+
+        if ((curr = (*this)(row + 1, col - 2)) == Empty ||
+            color(curr) != c)
+        {
+            squares.insert(to_square(row + 1, col - 2));
+        }
+
+        if ((curr = (*this)(row - 1, col - 2)) == Empty ||
+            color(curr) != c)
+        {
+            squares.insert(to_square(row - 1, col - 2));
+        }
+
+        if ((curr = (*this)(row - 2, col - 1)) == Empty ||
+            color(curr) != c)
+        {
+            squares.insert(to_square(row - 2, col - 1));
+        }
+
+        return squares;
+    }
+
     void Game::get_moves_for_dir(const Square& from, int r_dir, int c_dir, Squares& squares)
     {
         int row = get_row(from);
