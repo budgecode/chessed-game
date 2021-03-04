@@ -44,6 +44,9 @@ namespace chessed { namespace chess {
         m_state[61] = BlackBishop;
         m_state[62] = BlackKnight;
         m_state[63] = BlackRook;
+
+        m_white_king = "e1";
+        m_black_king = "e8";
     };
 
     Piece& Game::operator[](int i)
@@ -99,6 +102,15 @@ namespace chessed { namespace chess {
         if (possible_moves.find(to) == possible_moves.end())
             return false;
 
+        if ((*this)[from] == WhiteKing)
+        {
+            m_white_king = to;
+        }
+        else if ((*this)[from] == BlackKing)
+        {
+            m_black_king = to;
+        }
+
         info.to = to;
         info.from = from;
         info.captured = (*this)[to];
@@ -116,46 +128,61 @@ namespace chessed { namespace chess {
 
     Squares Game::get_possible_moves(const Square& from)
     {
+        Squares squares;
         if ((*this)[from] == WhitePawn ||
             (*this)[from] == BlackPawn)
         {
-            return get_moves_for_pawn(from);
+            get_moves_for_pawn(from, squares);
         }
         else if ((*this)[from] == WhiteBishop ||
                  (*this)[from] == BlackBishop)
         {
-            return get_moves_for_bishop(from);
+            get_moves_for_bishop(from, squares);
         }
         else if ((*this)[from] == WhiteRook ||
                  (*this)[from] == BlackRook)
         {
-            return get_moves_for_rook(from);
+            get_moves_for_rook(from, squares);
         }
         else if ((*this)[from] == WhiteQueen ||
                  (*this)[from] == BlackQueen)
         {
-            return get_moves_for_queen(from);
+            get_moves_for_queen(from, squares);
         }
         else if ((*this)[from] == WhiteKing ||
                  (*this)[from] == BlackKing)
         {
-            return get_moves_for_king(from);
+            get_moves_for_king(from, squares);
         }
         else if ((*this)[from] == WhiteKnight ||
                  (*this)[from] == BlackKnight)
         {
-            return get_moves_for_knight(from);
+            get_moves_for_knight(from, squares);
         }
-        else
-        {
-            Squares squares;
-            return squares;
-        }
+
+        return squares;
     }
 
     const GameState& Game::get_game_state()
     {
         return m_state;
+    }
+
+    bool Game::is_check()
+    {
+        Color turn = get_turn();
+        if (turn == White)
+        {
+        }
+        else if (turn == Black)
+        {
+        }
+        else
+        {
+            return false;
+        }
+
+        return false;
     }
 
     // Private methods
@@ -182,14 +209,13 @@ namespace chessed { namespace chess {
         return s;
     }
 
-    Squares Game::get_moves_for_pawn(const Square& from)
+    void Game::get_moves_for_pawn(const Square& from, Squares& squares)
     {
         /**
          * @to-do:
          * 1. Add support for en-passant.
          * 2. Add support for promotion.
          */
-        Squares squares;
         int row = get_row(from);
         int col = get_col(from);
         
@@ -218,13 +244,10 @@ namespace chessed { namespace chess {
         if (!empty_or_oob(right_diagonal) && color(right_diagonal) != c)
             squares.insert(to_square(row + direction, col + 1));
 
-        return squares;
     }
 
-    Squares Game::get_moves_for_bishop(const Square& from)
+    void Game::get_moves_for_bishop(const Square& from, Squares& squares)
     {
-        Squares squares;
-
         int r_dir = -1;
         int c_dir = -1;
         get_moves_for_dir(from, r_dir, c_dir, squares);
@@ -241,14 +264,10 @@ namespace chessed { namespace chess {
         r_dir = 1;
         c_dir = 1;
         get_moves_for_dir(from, r_dir, c_dir, squares);
-
-        return squares;
     }
 
-    Squares Game::get_moves_for_rook(const Square& from)
+    void Game::get_moves_for_rook(const Square& from, Squares& squares)
     {
-        Squares squares;
-
         int r_dir = -1;
         int c_dir = 0;
         get_moves_for_dir(from, r_dir, c_dir, squares);
@@ -265,14 +284,10 @@ namespace chessed { namespace chess {
         r_dir = 0;
         c_dir = 1;
         get_moves_for_dir(from, r_dir, c_dir, squares);
-
-        return squares;
     }
 
-    Squares Game::get_moves_for_queen(const Square& from)
+    void Game::get_moves_for_queen(const Square& from, Squares& squares)
     {
-        Squares squares;
-
         int r_dir = -1;
         int c_dir = 0;
         get_moves_for_dir(from, r_dir, c_dir, squares);
@@ -306,13 +321,10 @@ namespace chessed { namespace chess {
         r_dir = 1;
         c_dir = 1;
         get_moves_for_dir(from, r_dir, c_dir, squares);
-
-        return squares;
     }
 
-    Squares Game::get_moves_for_king(const Square& from)
+    void Game::get_moves_for_king(const Square& from, Squares& squares)
     {
-        Squares squares;
         int row = get_row(from);
         int col = get_col(from);
         Color c = color((*this)[from]);
@@ -365,13 +377,10 @@ namespace chessed { namespace chess {
         {
             squares.insert(to_square(row - 1, col + 1));
         }
-
-        return squares;
     }
 
-    Squares Game::get_moves_for_knight(const Square& from)
+    void Game::get_moves_for_knight(const Square& from, Squares& squares)
     {
-        Squares squares;
         int row = get_row(from);
         int col = get_col(from);
         Color c = color((*this)[from]);
@@ -424,8 +433,6 @@ namespace chessed { namespace chess {
         {
             squares.insert(to_square(row - 2, col - 1));
         }
-
-        return squares;
     }
 
     void Game::get_moves_for_dir(const Square& from, int r_dir, int c_dir, Squares& squares)

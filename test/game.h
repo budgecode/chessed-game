@@ -506,7 +506,5 @@ TEST_CASE("Ensure knights move correctly", "[game]")
 
         valid = game.move("f6", "e4", info);
         REQUIRE(valid);
-
-
     }
 }

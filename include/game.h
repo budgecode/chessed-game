@@ -34,6 +34,8 @@ public:
 
     const GameState& get_game_state();
 
+    bool is_check();
+
     // Accessors
     Piece& operator[](int);
     Piece& operator[](const Square&);
@@ -44,18 +46,21 @@ private:
     int m_half_moves;
     Piece oob = OutOfBounds;
     
+    Square m_white_king;
+    Square m_black_king;
+
     int get_row(const Square& s);
     int get_col(const Square& s);
     int to_index(int row, int col);
 
     Square to_square(int row, int col);
 
-    Squares get_moves_for_pawn(const Square& from);
-    Squares get_moves_for_bishop(const Square& from);
-    Squares get_moves_for_knight(const Square& from);
-    Squares get_moves_for_rook(const Square& from);
-    Squares get_moves_for_queen(const Square& from);
-    Squares get_moves_for_king(const Square& from);
+    void get_moves_for_pawn(const Square& from, Squares& squares);
+    void get_moves_for_bishop(const Square& from, Squares& squares);
+    void get_moves_for_knight(const Square& from, Squares& squares);
+    void get_moves_for_rook(const Square& from, Squares& squares);
+    void get_moves_for_queen(const Square& from, Squares& squares);
+    void get_moves_for_king(const Square& from, Squares& squares);
 
     void get_moves_for_dir(const Square& from, int r_dir, int c_dir, Squares& squares);
 };
