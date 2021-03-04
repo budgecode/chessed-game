@@ -475,3 +475,38 @@ TEST_CASE("Ensure kings move correctly", "[game]")
         REQUIRE(valid);
     }
 }
+
+TEST_CASE("Ensure knights move correctly", "[game]")
+{
+    SECTION("knights can move and capture")
+    {
+        Game game;
+        Move info;
+        
+        bool valid = game.move("b1", "c3", info);
+        REQUIRE(valid);
+        
+        valid = game.move("g8", "f6", info);
+        REQUIRE(valid);
+
+        valid = game.move("g1", "f3", info);
+        REQUIRE(valid);
+        
+        valid = game.move("b8", "c6", info);
+        REQUIRE(valid);
+
+        valid = game.move("c3", "e4", info);
+        REQUIRE(valid);
+
+        valid = game.move("c6", "e5", info);
+        REQUIRE(valid);
+
+        valid = game.move("f3", "e5", info);
+        REQUIRE(valid);
+
+        valid = game.move("f6", "e4", info);
+        REQUIRE(valid);
+
+
+    }
+}

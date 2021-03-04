@@ -139,7 +139,12 @@ namespace chessed { namespace chess {
         else if ((*this)[from] == WhiteKing ||
                  (*this)[from] == BlackKing)
         {
-            return get_moves_for_queen(from);
+            return get_moves_for_king(from);
+        }
+        else if ((*this)[from] == WhiteKnight ||
+                 (*this)[from] == BlackKnight)
+        {
+            return get_moves_for_knight(from);
         }
         else
         {
