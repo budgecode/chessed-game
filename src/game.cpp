@@ -170,17 +170,14 @@ namespace chessed { namespace chess {
 
     bool Game::is_check()
     {
-        Color turn = get_turn();
-        if (turn == White)
-        {
-        }
-        else if (turn == Black)
-        {
-        }
-        else
-        {
-            return false;
-        }
+        // @to-do: implement after implementing get all moves
+        // Color turn = get_turn();
+        // if (turn == White)
+        // {   
+        // }
+        // else if (turn == Black)
+        // {
+        // }
 
         return false;
     }
