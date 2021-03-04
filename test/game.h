@@ -413,3 +413,65 @@ TEST_CASE("Ensure queens move correctly", "[game]")
     }
 
 }
+
+TEST_CASE("Ensure kings move correctly", "[game]")
+{
+    SECTION("kings can't move through pieces")
+    {
+        Game game;
+        Move info;
+        bool valid = game.move("e1", "e2", info);
+        REQUIRE_FALSE(valid);
+
+        valid = game.move("e8", "e7", info);
+        REQUIRE_FALSE(valid);
+    }
+
+    SECTION("kings can move one space")
+    {
+        Game game;
+        Move info;
+        
+        bool valid = game.move("e2", "e4", info);
+        valid = game.move("e7", "e5", info);
+        
+        valid = game.move("e1", "e2", info);
+        REQUIRE(valid);
+
+        valid = game.move("e8", "e7", info);
+        REQUIRE(valid);
+
+        valid = game.move("e2", "f3", info);
+        REQUIRE(valid);
+        
+        valid = game.move("e7", "f6", info);
+        REQUIRE(valid);
+        
+        valid = game.move("f3", "e3", info);
+        REQUIRE(valid);
+        
+        valid = game.move("f6", "g6", info);
+        REQUIRE(valid);
+    }
+
+    SECTION("kings can capture space")
+    {
+        Game game;
+        Move info;
+        
+        bool valid = game.move("e2", "e4", info);
+        valid = game.move("e7", "e5", info);
+        valid = game.move("d2", "d4", info);
+        valid = game.move("d7", "d5", info);
+        valid = game.move("c1", "g5", info);
+        valid = game.move("c8", "g4", info);
+        valid = game.move("g5", "e7", info);
+        valid = game.move("g4", "e2", info);
+
+        valid = game.move("e1", "e2", info);
+        REQUIRE(valid);
+
+        valid = game.move("e8", "e7", info);
+        REQUIRE(valid);
+    }
+}

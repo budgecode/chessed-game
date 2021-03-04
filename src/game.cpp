@@ -136,6 +136,11 @@ namespace chessed { namespace chess {
         {
             return get_moves_for_queen(from);
         }
+        else if ((*this)[from] == WhiteKing ||
+                 (*this)[from] == BlackKing)
+        {
+            return get_moves_for_queen(from);
+        }
         else
         {
             Squares squares;
