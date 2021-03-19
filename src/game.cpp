@@ -95,10 +95,11 @@ namespace chessed { namespace chess {
 
     bool Game::move(const Square& from, const Square& to, Move& info)
     {
-        if (color((*this)[from]) != get_turn())
+        if (get_color((*this)[from]) != get_turn())
             return false;
 
-        Squares possible_moves = get_possible_moves(from);
+        Squares possible_moves;
+        get_possible_moves(from, possible_moves);
         if (possible_moves.find(to) == possible_moves.end())
             return false;
 
@@ -126,9 +127,8 @@ namespace chessed { namespace chess {
         return true;
     }
 
-    Squares Game::get_possible_moves(const Square& from)
+    void Game::get_possible_moves(const Square& from, Squares& squares)
     {
-        Squares squares;
         if ((*this)[from] == WhitePawn ||
             (*this)[from] == BlackPawn)
         {
@@ -159,8 +159,6 @@ namespace chessed { namespace chess {
         {
             get_moves_for_knight(from, squares);
         }
-
-        return squares;
     }
 
     const GameState& Game::get_game_state()
@@ -216,7 +214,7 @@ namespace chessed { namespace chess {
         int row = get_row(from);
         int col = get_col(from);
         
-        Color c = color((*this)[from]);
+        Color c = get_color((*this)[from]);
         assert(c != None); // This should not happen.
         
         int direction = 1;
@@ -235,10 +233,10 @@ namespace chessed { namespace chess {
         Piece& right_diagonal = (*this)(row + direction, col + 1);
         Piece& left_diagonal = (*this)(row + direction, col - 1);
 
-        if (!empty_or_oob(left_diagonal) && color(left_diagonal) != c)
+        if (!empty_or_oob(left_diagonal) && get_color(left_diagonal) != c)
             squares.insert(to_square(row + direction, col - 1));
 
-        if (!empty_or_oob(right_diagonal) && color(right_diagonal) != c)
+        if (!empty_or_oob(right_diagonal) && get_color(right_diagonal) != c)
             squares.insert(to_square(row + direction, col + 1));
 
     }
@@ -324,53 +322,53 @@ namespace chessed { namespace chess {
     {
         int row = get_row(from);
         int col = get_col(from);
-        Color c = color((*this)[from]);
+        Color c = get_color((*this)[from]);
         
         Piece curr = Empty;
         if ((curr = (*this)(row + 0, col + 1)) == Empty ||
-            color(curr) != c)
+            get_color(curr) != c)
         {
             squares.insert(to_square(row + 0, col + 1));
         }
         
         if ((curr = (*this)(row + 1, col + 0)) == Empty ||
-            color(curr) != c)
+            get_color(curr) != c)
         {
             squares.insert(to_square(row + 1, col + 0));
         }
 
         if ((curr = (*this)(row + 1, col + 1)) == Empty ||
-            color(curr) != c)
+            get_color(curr) != c)
         {
             squares.insert(to_square(row + 1, col + 1));
         }
         
         if ((curr = (*this)(row - 1 , col + 0)) == Empty ||
-            color(curr) != c)
+            get_color(curr) != c)
         {
             squares.insert(to_square(row - 1, col + 0));
         }
 
         if ((curr = (*this)(row + 0, col - 1)) == Empty ||
-            color(curr) != c)
+            get_color(curr) != c)
         {
             squares.insert(to_square(row + 0, col - 1));
         }
 
         if ((curr = (*this)(row - 1, col - 1)) == Empty ||
-            color(curr) != c)
+            get_color(curr) != c)
         {
             squares.insert(to_square(row - 1, col - 1));
         }
 
         if ((curr = (*this)(row + 1, col - 1)) == Empty ||
-            color(curr) != c)
+            get_color(curr) != c)
         {
             squares.insert(to_square(row + 1, col - 1));
         }
 
         if ((curr = (*this)(row - 1, col + 1)) == Empty ||
-            color(curr) != c)
+            get_color(curr) != c)
         {
             squares.insert(to_square(row - 1, col + 1));
         }
@@ -380,53 +378,53 @@ namespace chessed { namespace chess {
     {
         int row = get_row(from);
         int col = get_col(from);
-        Color c = color((*this)[from]);
+        Color c = get_color((*this)[from]);
         
         Piece curr = Empty;
         if ((curr = (*this)(row + 1, col + 2)) == Empty ||
-            color(curr) != c)
+            get_color(curr) != c)
         {
             squares.insert(to_square(row + 1, col + 2));
         }
         
         if ((curr = (*this)(row + 2, col + 1)) == Empty ||
-            color(curr) != c)
+            get_color(curr) != c)
         {
             squares.insert(to_square(row + 2, col + 1));
         }
 
         if ((curr = (*this)(row - 1, col + 2)) == Empty ||
-            color(curr) != c)
+            get_color(curr) != c)
         {
             squares.insert(to_square(row - 1, col + 2));
         }
         
         if ((curr = (*this)(row + 2, col - 1)) == Empty ||
-            color(curr) != c)
+            get_color(curr) != c)
         {
             squares.insert(to_square(row + 2, col - 1));
         }
 
         if ((curr = (*this)(row - 2, col + 1)) == Empty ||
-            color(curr) != c)
+            get_color(curr) != c)
         {
             squares.insert(to_square(row - 2, col + 1));
         }
 
         if ((curr = (*this)(row + 1, col - 2)) == Empty ||
-            color(curr) != c)
+            get_color(curr) != c)
         {
             squares.insert(to_square(row + 1, col - 2));
         }
 
         if ((curr = (*this)(row - 1, col - 2)) == Empty ||
-            color(curr) != c)
+            get_color(curr) != c)
         {
             squares.insert(to_square(row - 1, col - 2));
         }
 
         if ((curr = (*this)(row - 2, col - 1)) == Empty ||
-            color(curr) != c)
+            get_color(curr) != c)
         {
             squares.insert(to_square(row - 2, col - 1));
         }
@@ -436,7 +434,7 @@ namespace chessed { namespace chess {
     {
         int row = get_row(from);
         int col = get_col(from);
-        Color c = color((*this)[from]);
+        Color c = get_color((*this)[from]);
 
         int i = 1;
         Piece curr = Empty;
@@ -446,7 +444,7 @@ namespace chessed { namespace chess {
             i++;
         }
 
-        if (curr != OutOfBounds && color(curr) != c)
+        if (curr != OutOfBounds && get_color(curr) != c)
             squares.insert(to_square(row + i * r_dir, col + i * c_dir));
     }
 

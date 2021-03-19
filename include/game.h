@@ -4,15 +4,6 @@
 
 namespace chessed { namespace chess {
 
-struct Move {
-    bool is_check;
-    bool is_mate;
-    bool is_promoting;
-    Piece captured;
-    Square from;
-    Square to;
-};
-
 class Game {
 
 public:
@@ -30,7 +21,7 @@ public:
     int get_move_num();
     int get_half_moves();
 
-    Squares get_possible_moves(const Square& from);
+    void get_possible_moves(const Square& from, Squares& squares);
 
     const GameState& get_game_state();
 

@@ -3,6 +3,7 @@
 #include <string>
 #include <array>
 #include <unordered_set>
+#include <vector>
 
 namespace chessed { namespace chess {
 
@@ -35,7 +36,18 @@ typedef std::string Square;
 typedef std::unordered_set<Square> Squares;
 typedef std::array<Piece, 64> GameState;
 
-inline Color color(Piece p)
+struct Move {
+    bool is_check;
+    bool is_mate;
+    bool is_promoting;
+    Piece captured;
+    Square from;
+    Square to;
+};
+
+typedef std::vector<Move> Moves;
+
+inline Color get_color(Piece p)
 {
     switch (p)
     {
